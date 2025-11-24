@@ -1,44 +1,9 @@
 #include <iostream>
 #include <stdexcept>
-
-struct Planar
-{
-  virtual int x() const = 0;
-  virtual int y() const = 0;
-  virtual int abs_sqr() const = 0;
-  virtual ~Planar() = default;
-};
-
-//Planar * make(std::istream& is);
-Planar * make(size_t pl);
-void draw(Planar * pl);
-void free_planars(Planar ** pls, size_t k);
-Planar * mostleft(Planar ** pls, size_t k);
-
-struct Point: Planar 
-{
-  virtual int x() const;
-  virtual int y() const;
-  virtual int abs_sqr() const;   
-  Point(int xx, int yy);
-  virtual ~Point() = default;
-
-  private:
-    int data[2];
-};
-
-struct Vector: Planar 
-{
-  virtual int x() const;
-  virtual int y() const;
-  virtual int abs_sqr() const;   
-  Vector(int xx, int yy);
-  Vector(const Point & t1, const Point & t2);
-  virtual ~Vector() = default;
-
-  private:
-    int data[2];
-};
+#include <cstddef>
+#include "planar.hpp"
+#include "point.hpp"
+#include "vector.hpp"
 
 int main()
 {
@@ -61,49 +26,6 @@ int main()
   //pls[k++] = make(std::cin);
   Planar * left = mostleft(pls, k);
   draw(left);
-}
-
-Point::Point(int xx, int yy):
-  Planar(),
-  data{xx, yy}
-{}
-
-int Point::x() const
-{
-  return data[0];
-}
-
-int Point::y() const
-{
-  return data[1];  
-}
-
-int Point::abs_sqr() const
-{
-  return x() * x() + y() * y();  
-}
-
-Vector::Vector(const Point & t1, const Point & t2):
-  data{t2.x() - t1.x(), t2.y() - t1.y()}
-  {}
-
-Vector::Vector(int xx, int yy):
-  data{xx, yy}
-  {}
-
-int Vector::x() const
-{
-  return data[0];
-}
-
-int Vector::y() const
-{
-  return data[1];  
-}
-
-int Vector::abs_sqr() const
-{
-  return x() * x() + y() * y();  
 }
 
 Planar * make(size_t id)
