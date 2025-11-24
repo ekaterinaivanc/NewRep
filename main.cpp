@@ -37,3 +37,32 @@ int main()
   //draw(left);
   //free_planars(pls, k);
 }
+
+Planar * make(size_t pl)
+{
+  switch(pl)
+  {
+    default:
+      throw std::logic_error("bad id");
+  }
+}
+
+void free_planars(Planar ** pls, size_t k)
+{
+  for (size_t i = 0; i < k; ++i)
+  {
+    delete pls[i];
+  }
+}
+
+void draw(Planar * pl)
+{
+  std::cout << pl->x();
+  std::cout << " ";
+  std::cout << pl->y() << "\n";
+}
+
+Planar * mostleft(Planar ** pls, size_t k)
+{
+  return nullptr;
+}
