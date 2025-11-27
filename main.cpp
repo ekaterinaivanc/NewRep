@@ -121,6 +121,8 @@ void draw(Planar * pl)
   std::cout << pl->x();
   std::cout << " ";
   std::cout << pl->y() << "\n";
+  frame_t f = pl->frame();
+  std::cout << f.AA.x << " " << f.AA.y << " " << f.BB.x << " " << f.BB.y << "\n";
 }
 
 Planar ** mostleft(Planar ** pls, size_t k)
@@ -137,6 +139,59 @@ Planar ** mostleft(Planar ** pls, size_t k)
     if (next_x < curr_x)
     {
       res = pls;
+    }
+  }
+  return res;
+}
+
+Planar ** max_area(Planar ** pls, size_t k)
+{
+  if (!k)
+  {
+    return pls;
+  }
+  Planar ** max_pl = pls;
+  double maxx_area = (*pls)->area();
+  for (size_t i = 1; i < k; ++i)
+  {
+    double cur_area = pls[i]->area();
+    if (cur_area > maxx_area)
+    {
+      maxx_area = cur_area;
+      max_pl = pls + i;
+    }
+  }
+  return max_pl;
+}
+
+bool frames_intersect(const frame_t & f1, const frame_t & f2)
+{
+  return !(f1.BB.x < f2.AA.x || f1.AA.x > f2.BB.x || f1.BB.y < f2.AA.y || f1.AA.y > f2.BB.y);
+}
+
+Planar ** max_frame_intersects(Planar ** pls, size_t k)
+{
+  if (k < 2)
+  {
+    return nullptr;
+  }
+  int max_c = 0;
+  Planar ** res = nullptr;
+  for (size_t i = 0; i < k; ++i)
+  {
+    int c = 0;
+    frame_t frame_i = pls[i]->frame();
+    for (size_t j = 0; j < k; ++j)
+    {
+      if (i != j && frames_intersect(frame_i, pls[j]->frame()))
+      {
+        c++;
+      }
+    }
+    if (c > max_c)
+    {
+      max_c = c;
+      res = pls + i;
     }
   }
   return res;
