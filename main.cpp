@@ -7,25 +7,77 @@
 
 int main()
 {
-  Planar * pls[10] = {};
   size_t k = 0;
-  for (size_t i = 0; i < 10; ++i)
+  size_t c = 20;
+  Planar ** pls = new Planar *[c];
+  while (std::cin)
   {
-    try{
-        pls[k] = make(i % 2);
+    Planar * pl = nullptr;
+    try
+    {
+      pl = make(std::cin);
+      if (k == c)
+      {
+        Planar ** epls = new Planar *[c * 2];
+        for ( size_t i = 0; i < k; ++i)
+        {
+          epls[i] = pls[i];
+        }
+        delete[] pls;
+        pls = epls;
+        c *= 2;
+      }
+      pls[k++] = pl;
     }
     catch(...)
     {
+      delete[] pl;
       free_planars(pls, k);
+      delete[] pls;
       return 2;
     }
-    k++;
   }
-  draw(mostleft(pls, k));
+  if (!std::cin.eof())
+  {
+    free_planars(pls, k);
+    delete[] pls;
+    return 2;
+  }
+  Planar ** m = mostleft(pls, k);
+  if (m == pls + k)
+  {
+    std::cout << "not found";
+    free_planars(pls, k);
+    delete[] pls;
+    return 0;
+  }
+  draw(*m);
+  std::cout << "\n";
   free_planars(pls, k);
-  //pls[k++] = make(std::cin);
-  Planar * left = mostleft(pls, k);
-  draw(left);
+  delete[] pls;
+  return 0;
+}
+
+Planar * make(std::istream& is)
+{
+  char cmd[2] = {};
+  is >> cmd[0] >> cmd[1];
+  int data[4] = {};
+  if (cmd[0] == 'P' && cmd[1] == 'T')
+  {
+    if (is >> data[0] >> data[1])
+    {
+      return new Point(data[0], data[1]);
+    }
+  }
+  else if (cmd[0] == 'V' && cmd[1] == 'T')
+  {
+    if (is >> data[0] >> data[1] >> data[2] >> data[3])
+    {
+      return new Vector(Point(data[0], data[1]), Point(data[2], data[3]));
+    }
+  }
+    throw std::logic_error("bad cmd");
 }
 
 Planar * make(size_t id)
@@ -60,7 +112,21 @@ void draw(Planar * pl)
   std::cout << pl->y() << "\n";
 }
 
-Planar * mostleft(Planar ** pls, size_t k)
+Planar ** mostleft(Planar ** pls, size_t k)
 {
-  return nullptr;
+  if (!k) //нулевая длина
+  {
+    return pls;
+  }
+  Planar ** res = pls;
+  while (--k)
+  {
+    int next_x = (*(++pls))->x();
+    int curr_x = (*res)->x();
+    if (next_x < curr_x)
+    {
+      res = pls;
+    }
+  }
+  return res;
 }
