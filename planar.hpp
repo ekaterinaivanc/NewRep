@@ -30,5 +30,6 @@ void free_planars(Planar ** pls, size_t k);
 Planar ** mostleft(Planar ** pls, size_t k);
 Planar ** max_area(Planar ** pls, size_t k);
 Planar ** max_frame_intersects(Planar ** pls, size_t k);
+bool frames_intersect(const frame_t & f1, const frame_t & f2);
 
 #endif

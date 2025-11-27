@@ -54,6 +54,27 @@ int main()
   }
   draw(*m);
   std::cout << "\n";
+  if (k > 0)
+  {
+    Planar ** max_area_pl = max_area(pls, k);
+    draw(*max_area_pl);
+  }
+  if (k > 1)
+  {
+    Planar ** max_intersect_pl = max_frame_intersects(pls, k);
+    if (max_intersect_pl)
+    {
+      draw(*max_intersect_pl);
+    }
+    frame_t main_frame = (*max_intersect_pl)->frame();
+    for (size_t i = 0; i < k; ++i)
+    {
+      if (pls[i] != * max_intersect_pl && frames_intersect(main_frame, pls[i]->frame()))
+      {
+        draw(pls[i]);
+      }
+    }
+  }
   free_planars(pls, k);
   delete[] pls;
   return 0;
