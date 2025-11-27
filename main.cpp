@@ -97,7 +97,7 @@ Planar * make(size_t id)
       r = new Point(0,0);
       break;
     case 1:
-      r = new Vector(1,1);
+      r = new Vector(0, 0, 1,1);
       break;
     case 2:
       r = new Rectangle(0, 0, 2, 2);

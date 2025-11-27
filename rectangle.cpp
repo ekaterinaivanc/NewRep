@@ -26,3 +26,21 @@ int Rectangle::abs_sqr() const
 {
   return x() * x() + y() * y();  
 }
+
+double Rectangle::area() const
+{
+  int width = ((top2.x() - top1.x()) < 0) ? -(top2.x() - top1.x()) : (top2.x() - top1.x());  
+  int height = ((top2.y() - top1.y()) < 0) ? -(top2.y() - top1.y()) : (top2.y() - top1.y());  
+
+  return static_cast<double>(width * height);
+}
+
+frame_t Rectangle::frame() const
+{
+  int min_x = (top1.x() < top2.x()) ? top1.x() : top2.x();    
+  int min_y = (top1.y() < top2.y()) ? top1.y() : top2.y();  
+  int max_x = (top1.x() > top2.x()) ? top1.x() : top2.x();   
+  int max_y = (top1.y() > top2.y()) ? top1.y() : top2.y();   
+
+  return frame_t{{min_x, min_y}, {max_x, max_y}};
+}
