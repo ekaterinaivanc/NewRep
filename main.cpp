@@ -4,6 +4,7 @@
 #include "planar.hpp"
 #include "point.hpp"
 #include "vector.hpp"
+#include "rectangle.hpp"
 
 int main()
 {
@@ -77,7 +78,14 @@ Planar * make(std::istream& is)
       return new Vector(Point(data[0], data[1]), Point(data[2], data[3]));
     }
   }
-    throw std::logic_error("bad cmd");
+  else if (cmd[0] == 'R' && cmd[1] == 'E')
+  {
+    if (is >> data[0] >> data[1] >> data[2] >> data[3])
+    {
+      return new Rectangle(data[0], data[1], data[2], data[3]);
+    }
+  }
+  throw std::logic_error("bad cmd");
 }
 
 Planar * make(size_t id)
@@ -90,6 +98,9 @@ Planar * make(size_t id)
       break;
     case 1:
       r = new Vector(1,1);
+      break;
+    case 2:
+      r = new Rectangle(0, 0, 2, 2);
       break;
     default:
       throw std::logic_error("bad id");
@@ -114,7 +125,7 @@ void draw(Planar * pl)
 
 Planar ** mostleft(Planar ** pls, size_t k)
 {
-  if (!k) //нулевая длина
+  if (!k) 
   {
     return pls;
   }
