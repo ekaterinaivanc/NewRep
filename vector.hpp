@@ -11,6 +11,8 @@ struct Vector: Planar
   Vector(int xx, int yy);
   Vector(const Point & t1, const Point & t2);
   virtual ~Vector() = default;
+  virtual double area() const;
+  virtual frame_t frame() const;
 
   private:
     int data[2];

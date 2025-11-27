@@ -11,6 +11,8 @@ struct Rectangle: Planar
   Rectangle(int x1, int y1, int x2, int y2);
   Rectangle(const Point & t1, const Point & t2);
   virtual ~Rectangle() = default;
+  virtual double area() const;
+  virtual frame_t frame() const;
 
   private:
     Point top1, top2;

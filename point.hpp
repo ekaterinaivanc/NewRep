@@ -9,6 +9,8 @@ struct Point: Planar
   virtual int abs_sqr() const;   
   Point(int xx, int yy);
   virtual ~Point() = default;
+  virtual double area() const;
+  virtual frame_t frame() const;
 
   private:
     int data[2];
